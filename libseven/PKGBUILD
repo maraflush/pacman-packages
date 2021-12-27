@@ -1,0 +1,34 @@
+
+
+pkgname=('libseven')
+pkgver=0.1
+pkgrel=1
+pkgdesc="Nintendo GBA libseven library."
+arch=('any')
+license=('MPL')
+options=(!strip libtool staticlibs)
+source=(libseven::git://github.com/LunarLambda/libseven.git)
+depends=('devkitARM' 'devkitarm-rules' 'devkitarm-crtls')
+sha256sums=('SKIP')
+
+groups=('gba-dev')
+
+build() {
+  echo $srcdir
+  echo "--"
+  make -C ${srcdir}/${pkgname} -f Makefile.dkp
+
+}
+
+package() {
+  mkdir -p "${pkgdir}/${DEVKITPRO}/${pkgname}"
+  mkdir -p "${pkgdir}/${DEVKITPRO}/${pkgname}/include"
+  mkdir -p "${pkgdir}/${DEVKITPRO}/${pkgname}/lib"
+
+  cp -f "${srcdir}/${pkgname}/LICENSE_DOC.txt" "${pkgdir}/${DEVKITPRO}/${pkgname}"
+  cp -f "${srcdir}/${pkgname}/LICENSE_SRC.txt" "${pkgdir}/${DEVKITPRO}/${pkgname}"
+  cp -fR "${srcdir}/${pkgname}/inc/" "${pkgdir}/${DEVKITPRO}/${pkgname}/include"
+  cp -fR "${srcdir}/${pkgname}/build/libseven.a" "${pkgdir}/${DEVKITPRO}/${pkgname}/lib"
+
+
+}
